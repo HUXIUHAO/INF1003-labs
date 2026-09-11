@@ -1,0 +1,8 @@
+commit 9c2b21a9e8917bcbbd909c7870ff60e741178112
+Author: Hu Xiuhao <2604283@sit.singaporetech.edu.sg>
+Date:   Sun Sep 6 16:43:13 2026 +0800
+
+    second post
+
+#I'm sorry that I did "log add" AFTER the whole programmming was done
+#I promise it won't happen again.
