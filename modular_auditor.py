@@ -1,3 +1,4 @@
+
 def calculate_tax(original_price): 
     return original_price * (1+0.10)
 def process_delivery(current_total, new_value):
@@ -17,7 +18,8 @@ def get_valid_input(prompt):
             failed_attempts +=1
             continue
         return stock_quantity_add
-def generate_report(total_units,failed_attempts):
+def generate_report(total_units,failed_attempts,current_total):
+   print("current total after tax:", current_total)
    print("Total units processed:", total_units)
    print("Failed attempts:", failed_attempts)    
 current_total = 0
@@ -32,8 +34,9 @@ for walk_circle in range(111111):
  stock_quantity += stock_quantity_add
  print("total inventory:",stock_quantity)
  walk_circle += 1
+current_total = calculate_tax(process_delivery(current_total, stock_quantity))
 print("final inventory:",stock_quantity)
-generate_report(walk_circle, failed_attempts)
+generate_report(stock_quantity, failed_attempts, current_total)
 
 
 
