@@ -25,16 +25,20 @@ def get_valid_input(prompt):
             continue
         return stock_quantity_add
 
-def generate_report(total_units,failed_attempts,current_total):
-   print("current orders:", current_total)
-   print("Total units processed:", total_units)
-   print("Failed attempts:", failed_attempts)
+def generate_report():
+   with open("orders.txt", "r") as file:
+    order_lines = file.readlines()
+    print("current orders:")
+    for line in order_lines:
+        print(line.strip())
+
 
 def load_inventory():
-    orders = []
+    id = 1001
+    orders = [id]
 
     while True:
-        product_name = input("enter product name:")
+        product_name = input("enter product name(or 'stop' to finish):")
         orders.append(product_name)
         if product_name == "stop": 
             break
@@ -43,25 +47,19 @@ def load_inventory():
             break
         orders.append(product_quantity)
         print("New order added:")
-        print(product_name, product_quantity)
-
+        print(id, product_name, product_quantity)
+        id += 1
     return orders
+
 
 def save_inventory(orders):
     with open("orders.txt", "w") as file:
-        for order in orders:
-            file.write(str(order) + "\n")
+        file.writelines(orders)
 
-
-orders = []
-current_total = 0
-stock_quantity = 0
-walk_circle = 0
 failed_attempts = 0
+generate_report()
 inventory = load_inventory()
-walk_circle += 1
-current_total = calculate_tax(process_delivery(current_total, stock_quantity))
-print("final inventory:",stock_quantity)
-generate_report(stock_quantity, failed_attempts, current_total)
-save_inventory(orders)
+generate_report()
+save_inventory(inventory)
+orders = []
 print("Order successfully saved to orders.txt")
