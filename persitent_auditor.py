@@ -1,6 +1,14 @@
 def calculate_tax(original_price): 
     return original_price * (1+0.10)
 
+def count_orders():
+    try:
+        with open("orders.txt", "r") as file:
+            order_lines = file.readlines()
+            return len(order_lines)
+    except FileNotFoundError:
+        return 0
+
 def process_delivery(current_total, new_value):
     return current_total + new_value 
 
@@ -34,32 +42,39 @@ def generate_report():
 
 
 def load_inventory():
-    id = 1001
+    id = count_orders() + 1001
     orders = [id]
 
-    while True:
-        product_name = input("enter product name(or 'stop' to finish):")
-        orders.append(product_name)
-        if product_name == "stop": 
-            break
-        product_quantity = get_valid_input("enter product quantity:")
-        if product_quantity is None:
-            break
+    product_name = input("enter product name(or 'stop' to finish):")
+    if product_name.lower() == "stop":
+        return None
+    orders.append(product_name)
+    product_quantity = get_valid_input("enter product quantity:")
+    if product_quantity is None:
+            print("No quantity entered. Exiting.")
+    else:
         orders.append(product_quantity)
         print("New order added:")
         print(id, product_name, product_quantity)
-        id += 1
-    return orders
+    order_string = f"{id},{product_name},{product_quantity}\n"
+    return order_string
 
 
-def save_inventory(orders):
-    with open("orders.txt", "w") as file:
-        file.writelines(orders)
+def save_inventory(order_string):
+    if order_string is not None:
+     with open("orders.txt", "w") as file:
+        file.writelines(order_string)
+    else:
+        print("No order to save.")
 
 failed_attempts = 0
-generate_report()
-inventory = load_inventory()
-generate_report()
-save_inventory(inventory)
-orders = []
-print("Order successfully saved to orders.txt")
+while True:
+ generate_report()
+ inventory = load_inventory()
+ generate_report()
+ if inventory is not None:
+  save_inventory(inventory)
+ orders = []
+ print("Order successfully saved to orders.txt")
+ if load_inventory() is None:
+    break
