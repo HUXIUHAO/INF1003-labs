@@ -62,7 +62,7 @@ def load_inventory():
 
 def save_inventory(order_string):
     if order_string is not None:
-     with open("orders.txt", "w") as file:
+     with open("orders.txt", "a") as file:
         file.writelines(order_string)
     else:
         print("No order to save.")
@@ -74,7 +74,7 @@ while True:
  generate_report()
  if inventory is not None:
   save_inventory(inventory)
- orders = []
- print("Order successfully saved to orders.txt")
- if load_inventory() is None:
+  orders = []
+  print("Order successfully saved to orders.txt")
+ else:
     break
